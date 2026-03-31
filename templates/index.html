@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Agency Dashboard | Built by Arpit Ramesan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <style>
+        /* 1. Custom Animations for Background Orbs */
+        @keyframes blob {
+            0% { transform: translate(0px, 0px) scale(1); }
+            33% { transform: translate(30px, -50px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+            100% { transform: translate(0px, 0px) scale(1); }
+        }
+        .animate-blob { animation: blob 7s infinite; }
+        .animation-delay-2000 { animation-delay: 2s; }
+        .animation-delay-4000 { animation-delay: 4s; }
+
+        /* 2. Magic CSS to force OpenStreetMap into a sleek Dark Mode */
+        .leaflet-tile {
+            filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%);
+        }
+        
+        /* 3. Custom Scrollbar for the Map Popup */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.2); border-radius: 10px; }
+    </style>
+</head>
+
+<body class="bg-[#0f172a] text-white min-h-screen relative overflow-hidden font-sans">
+
+    <div class="absolute top-[-10%] left-[-10%] w-96 h-96 bg-purple-600 rounded-full mix-blend-multiply filter blur-[128px] opacity-50 animate-blob pointer-events-none"></div>
+    <div class="absolute top-[20%] right-[-10%] w-96 h-96 bg-blue-600 rounded-full mix-blend-multiply filter blur-[128px] opacity-50 animate-blob animation-delay-2000 pointer-events-none"></div>
+    <div class="absolute bottom-[-20%] left-[20%] w-96 h-96 bg-teal-500 rounded-full mix-blend-multiply filter blur-[128px] opacity-50 animate-blob animation-delay-4000 pointer-events-none"></div>
+
+    <div class="relative z-10 max-w-7xl mx-auto p-6 flex flex-col h-screen">
+        
+        <header class="flex flex-col md:flex-row justify-between items-center mb-6 bg-white/10 backdrop-blur-xl border border-white/20 p-4 rounded-2xl shadow-2xl">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-blue-500 to-purple-500 flex items-center justify-center shadow-lg border border-white/30">
+                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                </div>
+                <h1 class="text-2xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-blue-200 to-purple-200">
+                    AI Agency Generator
+                </h1>
+            </div>
+            
+            <div class="mt-4 md:mt-0 flex items-center space-x-6 text-sm font-medium text-gray-300">
+                <span class="opacity-80">Built by <span class="text-white font-bold">Arpit Ramesan</span></span>
+                <a href="https://github.com/ArkTrek" target="_blank" class="flex items-center space-x-1 hover:text-blue-400 transition">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd"></path></svg>
+                    <span>GitHub</span>
+                </a>
+                <a href="https://www.linkedin.com/in/arpitramesan/" target="_blank" class="flex items-center space-x-1 hover:text-blue-400 transition">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                    <span>LinkedIn</span>
+                </a>
+            </div>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 flex-1 min-h-0">
+            
+            <div class="bg-white/10 backdrop-blur-xl border border-white/20 p-6 rounded-3xl shadow-2xl flex flex-col h-full">
+                <h2 class="text-xl font-bold mb-5 text-white/90">Lead Parameters</h2>
+                
+                <div class="space-y-4 mb-6">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs uppercase tracking-wider text-white/60 mb-1">Target City</label>
+                            <input type="text" id="cityInput" value="Kozhikode" class="w-full bg-black/20 border border-white/10 focus:border-purple-400 focus:bg-black/30 backdrop-blur-md text-white rounded-xl p-2.5 outline-none transition shadow-inner">
+                        </div>
+                        <div>
+                            <label class="block text-xs uppercase tracking-wider text-white/60 mb-1">Niche</label>
+                            <input type="text" id="nicheInput" value="cafe" class="w-full bg-black/20 border border-white/10 focus:border-purple-400 focus:bg-black/30 backdrop-blur-md text-white rounded-xl p-2.5 outline-none transition shadow-inner">
+                        </div>
+                    </div>
+                    <button onclick="fetchLeads()" id="searchBtn" class="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 border border-white/20 shadow-lg transition py-3 rounded-xl font-bold tracking-wide">
+                        Scan Satellite Data
+                    </button>
+                </div>
+
+                <div id="map" class="flex-1 rounded-2xl border border-white/10 z-0 shadow-inner overflow-hidden"></div>
+                <p id="statusText" class="text-xs text-white/50 text-center mt-3 font-mono"></p>
+            </div>
+
+            <div class="lg:col-span-2 bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl shadow-2xl flex flex-col h-full overflow-hidden">
+                
+                <div class="bg-black/20 backdrop-blur-md p-4 border-b border-white/10 flex justify-between items-center">
+                    <div class="flex items-center space-x-4">
+                        <span class="text-sm font-semibold text-white/80" id="previewTitle">Live Preview Area</span>
+                        <button id="downloadBtn" onclick="downloadCode()" class="hidden bg-emerald-500/80 hover:bg-emerald-400 text-white backdrop-blur-md border border-emerald-400/50 px-4 py-1.5 rounded-lg text-xs font-bold transition shadow-[0_0_15px_rgba(16,185,129,0.4)]">
+                            <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                            Export Code
+                        </button>
+                    </div>
+                    <div class="flex space-x-2">
+                        <div class="w-3.5 h-3.5 rounded-full bg-red-500/80 border border-red-500/50 shadow-sm"></div>
+                        <div class="w-3.5 h-3.5 rounded-full bg-yellow-500/80 border border-yellow-500/50 shadow-sm"></div>
+                        <div class="w-3.5 h-3.5 rounded-full bg-green-500/80 border border-green-500/50 shadow-sm"></div>
+                    </div>
+                </div>
+                
+                <div class="flex-1 flex items-center justify-center relative bg-black/10" id="previewContainer">
+                    <div class="text-center text-white/40">
+                        <svg class="w-20 h-20 mx-auto mb-6 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                        <h3 class="text-lg font-medium tracking-wide">Select a target on the map to begin.</h3>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        let currentGeneratedHTML = ""; 
+        let currentBusinessName = "";
+        let markers = []; 
+
+        let map = L.map('map', { zoomControl: false }).setView([11.2588, 75.7804], 12); 
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OSM'
+        }).addTo(map);
+        L.control.zoom({ position: 'bottomright' }).addTo(map);
+
+        async function fetchLeads() {
+            const btn = document.getElementById('searchBtn');
+            const statusText = document.getElementById('statusText');
+            const city = document.getElementById('cityInput').value;
+            const niche = document.getElementById('nicheInput').value;
+
+            btn.innerHTML = `<svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Scanning...`;
+            btn.classList.add("opacity-70", "cursor-not-allowed");
+            statusText.innerText = "Querying OpenStreetMap via Overpass API...";
+
+            try {
+                const response = await fetch('/api/find_leads', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ city, niche })
+                });
+                const result = await response.json();
+                
+                if (result.status === 'success') {
+                    statusText.innerText = `[SUCCESS] Located ${result.leads.length} targets.`;
+                    markers.forEach(m => map.removeLayer(m));
+                    markers = [];
+                    
+                    if (result.leads.length > 0) {
+                        result.leads.forEach(lead => {
+                            // Custom map pin design
+                            const marker = L.marker([lead.lat, lead.lon]).addTo(map);
+                            
+                            const popupHTML = `
+                                <div class="font-sans text-gray-800 p-1">
+                                    <h4 class="font-bold text-lg leading-tight mb-1">${lead.name}</h4>
+                                    <p class="text-xs text-gray-500 mb-3">${lead.address}</p>
+                                    <button onclick="triggerGeminiBuild('${lead.name.replace(/'/g, "\\'")}', '${niche}', '${city}')" 
+                                            class="w-full bg-purple-600 hover:bg-purple-700 text-white py-2 rounded shadow-md text-sm font-bold transition">
+                                        ⚡ Generate Website
+                                    </button>
+                                </div>
+                            `;
+                            marker.bindPopup(popupHTML);
+                            markers.push(marker);
+                        });
+                        const group = new L.featureGroup(markers);
+                        map.fitBounds(group.getBounds().pad(0.1));
+                    }
+                } else {
+                    statusText.innerText = `[ERROR] ${result.message}`;
+                }
+            } catch (error) {
+                statusText.innerText = `[NETWORK ERROR] Check Python backend.`;
+            } finally {
+                btn.innerText = "Scan Satellite Data";
+                btn.classList.remove("opacity-70", "cursor-not-allowed");
+            }
+        }
+
+        async function triggerGeminiBuild(businessName, niche, city) {
+            const previewTitle = document.getElementById('previewTitle');
+            const previewContainer = document.getElementById('previewContainer');
+            const downloadBtn = document.getElementById('downloadBtn');
+
+            downloadBtn.classList.add('hidden');
+            currentGeneratedHTML = "";
+            currentBusinessName = "";
+
+            previewTitle.innerText = `Compiling code for: ${businessName}...`;
+            
+            previewContainer.innerHTML = `
+                <div class="flex flex-col items-center justify-center h-full space-y-5">
+                    <div class="relative w-20 h-20">
+                        <div class="absolute inset-0 rounded-full border-t-2 border-purple-400 animate-spin"></div>
+                        <div class="absolute inset-2 rounded-full border-r-2 border-blue-400 animate-spin" style="animation-direction: reverse; animation-duration: 1.5s;"></div>
+                    </div>
+                    <div class="text-center">
+                        <p class="text-white font-bold text-xl tracking-wide">Gemini AI is designing...</p>
+                        <p class="text-blue-300/80 text-sm mt-1 font-mono">Writing Tailwind CSS & HTML</p>
+                    </div>
+                </div>
+            `;
+
+            try {
+                const response = await fetch('/api/generate_demo', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ businessName, niche, city })
+                });
+
+                const result = await response.json();
+
+                if (result.status === 'success') {
+                    previewTitle.innerText = `Preview: ${businessName}`;
+                    currentGeneratedHTML = result.html;
+                    currentBusinessName = businessName;
+                    
+                    downloadBtn.classList.remove('hidden');
+                    
+                    // The iFrame gets a solid white background so the generated code looks correct
+                    previewContainer.innerHTML = `
+                        <iframe class="w-full h-full bg-white border-0 rounded-b-3xl" srcdoc="${escapeHTML(result.html)}"></iframe>
+                    `;
+                } else {
+                    previewContainer.innerHTML = `<p class="text-red-400 p-4 font-bold bg-red-900/20 rounded border border-red-500/30">Error: ${result.message}</p>`;
+                    previewTitle.innerText = "Generation Failed";
+                }
+
+            } catch (error) {
+                previewContainer.innerHTML = `<p class="text-red-400 p-4 font-bold bg-red-900/20 rounded border border-red-500/30">Network Error. Check your Python terminal.</p>`;
+                previewTitle.innerText = "Generation Failed";
+            }
+        }
+
+        function downloadCode() {
+            if (!currentGeneratedHTML) return;
+            const blob = new Blob([currentGeneratedHTML], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            const safeName = currentBusinessName.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+            a.download = `${safeName}_website.html`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function escapeHTML(str) {
+            return str.replace(/&/g, '&amp;')
+                      .replace(/</g, '&lt;')
+                      .replace(/>/g, '&gt;')
+                      .replace(/"/g, '&quot;')
+                      .replace(/'/g, '&#039;');
+        }
+    </script>
+</body>
+</html>
