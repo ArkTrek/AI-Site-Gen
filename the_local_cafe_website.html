@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Local Cafe - Kozhikode</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for dramatic gradient and text shadow */
+        .vibrant-gradient-hero {
+            background: linear-gradient(135deg, #1A0A2C 0%, #4A005C 30%, #8C0068 70%, #1A0A2C 100%);
+            /* A deep purple-magenta-dark purple gradient for dramatic saturation */
+        }
+        .text-shadow-strong {
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8);
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body class="bg-gray-950 text-gray-100 font-sans antialiased">
+
+    <!-- Navbar -->
+    <nav class="bg-gray-950 p-4 fixed w-full z-20 shadow-xl bg-opacity-90 backdrop-blur-sm">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="#hero" class="text-3xl font-extrabold text-amber-400 hover:text-amber-300 transition-colors">The Local Cafe</a>
+            <div class="space-x-8 text-xl hidden md:flex">
+                <a href="#hero" class="text-gray-200 hover:text-amber-400 transition-colors">Home</a>
+                <a href="#about" class="text-gray-200 hover:text-amber-400 transition-colors">About</a>
+                <a href="#menu" class="text-gray-200 hover:text-amber-400 transition-colors">Menu</a>
+                <a href="#contact" class="px-6 py-2 bg-amber-500 text-gray-900 rounded-full hover:bg-amber-400 transition-colors font-semibold shadow-lg">Visit Us</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="relative min-h-screen flex items-center justify-center text-center text-white overflow-hidden vibrant-gradient-hero pt-24 pb-12">
+        <!-- Background Overlay for contrast -->
+        <div class="absolute inset-0 bg-black opacity-30"></div>
+        <div class="relative z-10 p-8 max-w-5xl mx-auto">
+            <h1 class="text-6xl md:text-8xl font-extrabold leading-tight mb-6 text-amber-400 text-shadow-strong">
+                The Local Cafe
+            </h1>
+            <p class="text-2xl md:text-4xl mb-10 font-light text-gray-200 text-shadow-strong">
+                Where every cup tells a story, in the heart of Kozhikode.
+            </p>
+            <a href="#menu" class="inline-block bg-amber-500 hover:bg-amber-400 text-gray-900 text-xl md:text-2xl font-bold py-4 px-10 rounded-full shadow-xl transition-all transform hover:scale-105 duration-300 ease-in-out">
+                Explore Our Menu
+            </a>
+        </div>
+    </section>
+
+    <!-- About Us Section -->
+    <section id="about" class="py-20 bg-gray-900 text-gray-100">
+        <div class="container mx-auto px-6 md:px-12 flex flex-col md:flex-row items-center gap-12">
+            <div class="md:w-1/2">
+                <img src="https://source.unsplash.com/800x600/?cafe-interior,coffee-shop,cozy" alt="Cozy Cafe Interior" class="rounded-xl shadow-2xl object-cover w-full h-96 transform hover:scale-102 transition-transform duration-500 ease-in-out">
+            </div>
+            <div class="md:w-1/2 text-center md:text-left">
+                <h2 class="text-5xl font-extrabold mb-6 text-amber-400">Our Story</h2>
+                <p class="text-lg leading-relaxed mb-6 text-gray-300">
+                    Nestled amidst the bustling streets of historic <strong class="text-amber-300">Kozhikode</strong>, The Local Cafe is a cherished spot where tradition meets modern charm. We are dedicated to crafting exceptional coffee and delightful treats, embodying the spirit and warmth of this vibrant city.
+                </p>
+                <p class="text-lg leading-relaxed text-gray-300">
+                    From the rich aroma of our meticulously sourced beans to the welcoming ambiance, we invite you to unwind, connect, and savor moments. Whether it's a quick espresso, a leisurely brunch, or an evening chat, find your perfect corner with us.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services/Menu Section -->
+    <section id="menu" class="py-20 bg-gray-950 text-gray-100">
+        <div class="container mx-auto px-6 md:px-12">
+            <h2 class="text-5xl font-extrabold text-center mb-16 text-amber-400">Our Menu</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+
+                <!-- Menu Item 1 -->
+                <div class="bg-gray-800 rounded-xl shadow-xl overflow-hidden transform hover:scale-105 transition-all duration-300 ease-in-out group">
+                    <img src="https://source.unsplash.com/800x600/?latte-art,coffee" alt="Signature Latte" class="w-full h-64 object-cover group-hover:brightness-90 transition-all duration-300">
+                    <div class="p-6">
+                        <h3 class="text-3xl font-bold mb-3 text-amber-400 group-hover:text-amber-300 transition-colors">Signature Latte</h3>
+                        <p class="text-gray-300 mb-4">
+                            A classic, expertly crafted with rich espresso and velvety steamed milk, adorned with beautiful latte art.
+                        </p>
+                        <span class="text-2xl font-semibold text-amber-200">₹180</span>
+                    </div>
+                </div>
+
+                <!-- Menu Item 2 -->
+                <div class="bg-gray-800 rounded-xl shadow-xl overflow-hidden transform hover:scale-105 transition-all duration-300 ease-in-out group">
+                    <img src="https://source.unsplash.com/800x600/?espresso-shot,dark-coffee" alt="Bold Espresso" class="w-full h-64 object-cover group-hover:brightness-90 transition-all duration-300">
+                    <div class="p-6">
+                        <h3 class="text-3xl font-bold mb-3 text-amber-400 group-hover:text-amber-300 transition-colors">Bold Espresso</h3>
+                        <p class="text-gray-300 mb-4">
+                            Our meticulously roasted beans, pulled to perfection for a concentrated, intense burst of flavor.
+                        </p>
+                        <span class="text-2xl font-semibold text-amber-200">₹120</span>
+                    </div>
+                </div>
+
+                <!-- Menu Item 3 -->
+                <div class="bg-gray-800 rounded-xl shadow-xl overflow-hidden transform hover:scale-105 transition-all duration-300 ease-in-out group">
+                    <img src="https://source.unsplash.com/800x600/?croissant,pastries" alt="Flaky Croissant" class="w-full h-64 object-cover group-hover:brightness-90 transition-all duration-300">
+                    <div class="p-6">
+                        <h3 class="text-3xl font-bold mb-3 text-amber-400 group-hover:text-amber-300 transition-colors">Flaky Croissant</h3>
+                        <p class="text-gray-300 mb-4">
+                            Buttery, light, and airy – the quintessential companion to your morning coffee. Freshly baked daily.
+                        </p>
+                        <span class="text-2xl font-semibold text-amber-200">₹90</span>
+                    </div>
+                </div>
+
+                <!-- Menu Item 4 -->
+                <div class="bg-gray-800 rounded-xl shadow-xl overflow-hidden transform hover:scale-105 transition-all duration-300 ease-in-out group">
+                    <img src="https://source.unsplash.com/800x600/?cold-brew,ice-coffee" alt="Artisan Cold Brew" class="w-full h-64 object-cover group-hover:brightness-90 transition-all duration-300">
+                    <div class="p-6">
+                        <h3 class="text-3xl font-bold mb-3 text-amber-400 group-hover:text-amber-300 transition-colors">Artisan Cold Brew</h3>
+                        <p class="text-gray-300 mb-4">
+                            Slow-steeped for 18 hours, delivering a smooth, low-acid, and intensely refreshing cold brew.
+                        </p>
+                        <span class="text-2xl font-semibold text-amber-200">₹200</span>
+                    </div>
+                </div>
+
+                <!-- Menu Item 5 -->
+                <div class="bg-gray-800 rounded-xl shadow-xl overflow-hidden transform hover:scale-105 transition-all duration-300 ease-in-out group">
+                    <img src="https://source.unsplash.com/800x600/?matcha-latte,tea" alt="Velvet Matcha Latte" class="w-full h-64 object-cover group-hover:brightness-90 transition-all duration-300">
+                    <div class="p-6">
+                        <h3 class="text-3xl font-bold mb-3 text-amber-400 group-hover:text-amber-300 transition-colors">Velvet Matcha Latte</h3>
+                        <p class="text-gray-300 mb-4">
+                            Premium ceremonial grade matcha, whisked to perfection with your choice of milk for a creamy indulgence.
+                        </p>
+                        <span class="text-2xl font-semibold text-amber-200">₹220</span>
+                    </div>
+                </div>
+
+                <!-- Menu Item 6 -->
+                <div class="bg-gray-800 rounded-xl shadow-xl overflow-hidden transform hover:scale-105 transition-all duration-300 ease-in-out group">
+                    <img src="https://source.unsplash.com/800x600/?cake,dessert-slice" alt="Decadent Chocolate Cake" class="w-full h-64 object-cover group-hover:brightness-90 transition-all duration-300">
+                    <div class="p-6">
+                        <h3 class="text-3xl font-bold mb-3 text-amber-400 group-hover:text-amber-300 transition-colors">Decadent Chocolate Cake</h3>
+                        <p class="text-gray-300 mb-4">
+                            Rich, moist chocolate cake with a luscious ganache frosting. The perfect sweet ending to any visit.
+                        </p>
+                        <span class="text-2xl font-semibold text-amber-200">₹150</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section / Footer -->
+    <footer id="contact" class="bg-gray-900 py-16 text-gray-300">
+        <div class="container mx-auto px-6 md:px-12 text-center">
+            <h2 class="text-5xl font-extrabold mb-8 text-amber-400">Visit Us</h2>
+            <p class="text-xl mb-4 text-gray-200">
+                Find us at: <br>
+                <strong class="text-amber-300">123 Beach Road, Near SM Street, Kozhikode, Kerala</strong>
+            </p>
+            <p class="text-lg mb-8">
+                Open Daily: <br>
+                <strong class="text-amber-300">Monday - Sunday: 8:00 AM - 10:00 PM</strong>
+            </p>
+            <p class="text-lg mb-8">
+                Call Us: <strong class="text-amber-300">+91 98765 43210</strong> | Email: <strong class="text-amber-300">hello@thelocalcafe.com</strong>
+            </p>
+            <div class="mt-10 pt-8 border-t border-gray-700">
+                <p>&copy; 2023 The Local Cafe. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
