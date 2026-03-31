@@ -6,7 +6,7 @@ import os
 app = Flask(__name__)
 
 # Set your API key here (or export it to your environment variables)
-genai.configure(api_key="AIzaSyDBSc3FOfH0YplkGhVjLGWqP00caNqAuJg")
+genai.configure(api_key="GEMINI-API-KEY")
 
 @app.route('/')
 def home():
